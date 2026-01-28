@@ -1,37 +1,155 @@
-# Ingenious Softworks candidate test
+# Ingenious Backend Test – Event Board Application
 
-Welcome **candidate**, this is the Ingenious candidate test, a repo with a small problem to solve with the technology you want. Bellow is all the information you need to perform the test.
+## Overview
 
-Before diving in please read carefully this README since it may answer much of the doubts you may have.
+This project is a simple **Event Board web application** developed as part of the Ingenious Softworks backend test.
 
-## About the test
+The app allows visitors to view and share events, and authenticated users (admin) to manage events via a backend dashboard.
 
-The idea of the test is to write a small web app using this repo as a guide.
+It follows exactly the **user stories and constraints** described in the provided instructions, focusing on clean backend logic, authentication, and usable views.
 
-## About the repo
+---
 
-This repo has the following structure:
+## Tech Stack
+
+* **Node.js** (Express)
+* **PostgreSQL** (events & users)
+* **EJS** templates (views)
+* **bcrypt** (password hashing)
+* **express-session** (authentication)
+
+No full frameworks were used (only libraries), as requested.
+
+---
+
+## Features Implemented (User Stories)
+
+### ✅ List events
+
+* Homepage lists all events
+* Events are sorted by date
+
+### ✅ List featured events
+
+* Featured events are shown on the right side of homepage
+
+### ✅ Event detail page
+
+* Clicking an event opens a detail page
+* Shows title, description, date, location, image
+
+### ✅ Share event
+
+* Share button posts to Twitter
+* Text format:
+
+  > I will attend to [Event Name] @ [Event Date]
+
+### ✅ Login
+
+* Admin can log in
+* Session-based authentication
+
+### ✅ Backend event list (admin)
+
+* Admin can see the same event list
+* Pagination supported
+
+### ✅ Create event (admin)
+
+Admin can create events with:
+
+* Title
+* Description
+* Date
+* Location
+* Image URL
+* Featured flag
+
+---
+
+## Project Structure
 
 ```
 .
-├── README.md
-├── app
-└── instructions
+app/
+├── server.js            
+├── db/
+│   ├── db.js             
+│   └── init.sql           
+├── middleware/
+│   ├── auth.js           
+│   └── admin.js           
+├── models/
+│   └── event.model.js     
+├── routes/
+│   ├── auth.routes.js
+│   ├── events.routes.js
+│   └── admin.routes.js
+├── views/
+│   ├── home.ejs
+│   ├── event-detail.ejs
+│   ├── login.ejs
+│   └── new-event.ejs
+├── public/
+└── README.md             
 ```
 
-[nstructions folder](instructions) has all the problem domain and some FAQ.
+---
 
-## How to deliver the test
+## Database Setup
 
-To deliver the test simply email your contact with the forked repo URL with all the code written inside the [app folder](app). Please write a README with installation instructions if needed.
+### 1. Create database
 
-You can also email a zip file with all the repo and the developed app.
+```bash
+createdb events_app
+```
 
-In any case, you should send nor commit directories that are automatically provisioned.
+### 2. Run init script (tables + seed data)
 
-## Next steps
+```bash
+psql -U your_user -d events_app -f db/init.sql
+```
 
-The next thing you need to do is to read the [problem domain](instructions) and after that, you can start [developing the app](app).
+This will create:
 
-* [Read the problem domain](instructions)
-* [Start developing the app](app)
+* `users` table (with admin user)
+* `events` table (with sample events)
+
+---
+
+## Admin Login Credentials
+
+```
+Email: admin@test.com
+Password: admin123
+```
+
+---
+
+## Run the Application
+
+```bash
+npm install
+npm start
+```
+
+App will run at:
+
+```
+http://localhost:3000
+```
+
+---
+
+## Notes / Assumptions
+
+* Only one admin role is required for this test
+* Image upload is handled via URL (as requested)
+* UI is intentionally simple to focus on backend logic
+* Pagination is implemented server-side
+
+---
+
+
+
