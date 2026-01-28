@@ -4,65 +4,164 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= event.title %></title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>body { font-family: 'Inter', sans-serif; }</style>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            background: 'hsl(0, 0%, 99%)',
+            foreground: 'hsl(220, 20%, 10%)',
+            card: 'hsl(0, 0%, 100%)',
+            'card-foreground': 'hsl(220, 20%, 10%)',
+            primary: { DEFAULT: 'hsl(217, 91%, 50%)', foreground: 'hsl(0, 0%, 100%)' },
+            secondary: { DEFAULT: 'hsl(220, 14%, 96%)', foreground: 'hsl(220, 20%, 20%)' },
+            muted: { DEFAULT: 'hsl(220, 14%, 96%)', foreground: 'hsl(220, 10%, 45%)' },
+            accent: { DEFAULT: 'hsl(217, 91%, 95%)', foreground: 'hsl(217, 91%, 40%)' },
+            destructive: { DEFAULT: 'hsl(0, 84%, 60%)', foreground: 'hsl(0, 0%, 100%)' },
+            border: 'hsl(220, 13%, 91%)',
+          },
+          borderRadius: { lg: '0.75rem' },
+          boxShadow: {
+            'card': '0 4px 6px -1px hsl(220 20% 10% / 0.08), 0 2px 4px -2px hsl(220 20% 10% / 0.05)',
+            'card-hover': '0 10px 15px -3px hsl(220 20% 10% / 0.08), 0 4px 6px -4px hsl(220 20% 10% / 0.05)',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+    .animate-fade-in { animation: fadeIn 0.3s ease-out; }
+    .animate-scale-in { animation: scaleIn 0.4s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes scaleIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+  </style>
 </head>
-<body class="min-h-screen bg-gray-50">
-  <header class="bg-white border-b border-gray-200 sticky top-0 z-40">
-    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-      <a href="/" class="font-semibold text-xl text-gray-900">Events</a>
-      <a href="/login" class="text-sm text-gray-600 hover:text-blue-600 transition-colors">Admin Login</a>
-    </div>
-  </header>
+<body class="min-h-screen bg-background">
 
-  <main class="max-w-7xl mx-auto px-4 py-8">
-    <a href="/" class="inline-flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors mb-6">
-      ← Back to Events
+<!-- Header -->
+<header class="sticky top-0 z-40 w-full border-b border-border bg-card/80 backdrop-blur-md">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex h-16 items-center justify-between">
+    <a href="/" class="flex items-center gap-2 group">
+      <div class="w-9 h-9 bg-primary rounded-lg flex items-center justify-center transition-transform group-hover:scale-105">
+        <svg class="w-5 h-5 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+        </svg>
+      </div>
+      <span class="font-semibold text-xl text-foreground">Events</span>
     </a>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-      <div class="order-2 lg:order-1">
-        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2"><%= event.title %></h1>
-        <p class="flex items-center gap-2 text-gray-500 mb-6">📍 <%= event.location %></p>
-        <p class="text-gray-700 leading-relaxed mb-8"><%= event.description %></p>
+    <nav class="flex items-center gap-4">
+      <a href="/login" class="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+        </svg>
+        Admin
+      </a>
+    </nav>
+  </div>
+</header>
 
-        <div class="bg-white rounded-lg overflow-hidden shadow-md mb-8">
-          <table class="w-full">
-            <thead>
-              <tr class="bg-gray-100">
-                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900">📅 Date</th>
-                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900">🕐 Time</th>
-                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900">💵 Price</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200">
-              <% event.dates.split(',').forEach(date => { %>
-              <tr class="hover:bg-gray-50 transition-colors">
-                <td class="px-4 py-3 text-sm text-gray-900"><%= date.trim() %></td>
-                <td class="px-4 py-3 text-sm text-gray-900"><%= event.time || '19:30' %></td>
-                <td class="px-4 py-3 text-sm font-medium text-gray-900"><%= event.price == 0 ? 'Free' : '$' + event.price %></td>
-              </tr>
-              <% }) %>
-            </tbody>
-          </table>
-        </div>
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- Back Button -->
+  <a href="/" class="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-6 group">
+    <svg class="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+    </svg>
+    <span>Back to Events</span>
+  </a>
 
-        <a href="https://twitter.com/intent/tweet?text=I will attend <%= encodeURIComponent(event.title) %> @ <%= encodeURIComponent(event.dates) %>"
-          target="_blank"
-          class="inline-flex items-center gap-2 px-4 py-2 bg-blue-400 hover:bg-blue-500 text-white font-medium rounded-lg transition-all hover:scale-105">
-          🐦 Tweet this event
-        </a>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <!-- Left Content -->
+    <div class="order-2 lg:order-1">
+      <h1 class="text-3xl md:text-4xl font-bold text-foreground mb-2 animate-fade-in">
+        <%= event.title %>
+      </h1>
+      
+      <div class="flex items-center gap-2 text-muted-foreground mb-6">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+        <span><%= event.location %></span>
       </div>
 
-      <div class="order-1 lg:order-2">
-        <div class="lg:sticky lg:top-24">
-          <div class="rounded-lg overflow-hidden shadow-lg">
-            <img src="<%= event.image_url || '/placeholder.svg' %>" alt="<%= event.title %>" class="w-full aspect-video object-cover">
-          </div>
+      <div class="prose prose-slate max-w-none mb-8">
+        <p class="text-foreground/80 leading-relaxed text-base">
+          <%= event.description %>
+        </p>
+      </div>
+
+      <!-- Dates Table -->
+      <div class="bg-card rounded-lg overflow-hidden shadow-card mb-8 animate-fade-in">
+        <table class="w-full">
+          <thead>
+            <tr class="bg-muted">
+              <th class="px-4 py-3 text-left text-sm font-semibold text-foreground">
+                <div class="flex items-center gap-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                  </svg>
+                  Date
+                </div>
+              </th>
+              <th class="px-4 py-3 text-left text-sm font-semibold text-foreground">
+                <div class="flex items-center gap-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  Time
+                </div>
+              </th>
+              <th class="px-4 py-3 text-left text-sm font-semibold text-foreground">
+                <div class="flex items-center gap-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  Price
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-border">
+            <% event.dates.split(',').forEach(date => { %>
+            <tr class="hover:bg-muted/50 transition-colors">
+              <td class="px-4 py-3 text-sm text-foreground"><%= date.trim() %></td>
+              <td class="px-4 py-3 text-sm text-foreground"><%= event.time || '19:30' %></td>
+              <td class="px-4 py-3 text-sm font-medium text-foreground">
+                <%= event.price == 0 ? 'Free' : '$' + event.price %>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Share Button -->
+      <a href="https://twitter.com/intent/tweet?text=<%= encodeURIComponent('I will attend ' + event.title + ' @ ' + event.dates) %>"
+         target="_blank"
+         class="inline-flex items-center gap-2 px-4 py-2 bg-[#1DA1F2] hover:bg-[#1a8cd8] text-white font-medium rounded-md transition-all hover:scale-105">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+        Tweet this event
+      </a>
+    </div>
+
+    <!-- Right Image -->
+    <div class="order-1 lg:order-2">
+      <div class="sticky top-24">
+        <div class="rounded-lg overflow-hidden shadow-card-hover animate-scale-in">
+          <img src="<%= event.image_url || '/placeholder.svg' %>" alt="<%= event.title %>"
+               class="w-full aspect-[4/3] object-cover">
         </div>
       </div>
     </div>
-  </main>
+  </div>
+</main>
+
 </body>
 </html>
